@@ -40,10 +40,10 @@ lixavier:
   storage:
     active: tencent
     tencent:
-      secretId: AKIDe6J6rfJhs3yeGwkh7SSEk12oJNBnMFJA
-      secretKey: 7FajgP7bq00f7LN9i380iCWdVAbnlX7a
-      region: ap-shanghai
-      bucketName: lixavier-1252064920
+      secretId: --
+      secretKey: --
+      region: --
+      bucketName: --
 
 pagehelper:
   helperDialect: mysql
