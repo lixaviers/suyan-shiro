@@ -1,0 +1,362 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lixavier.manage.dao.GiftCardMapper">
+    <resultMap id="BaseResultMap" type="com.lixavier.manage.model.GiftCard">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="price" jdbcType="DECIMAL" property="price" />
+    <result column="use_order_no" jdbcType="VARCHAR" property="useOrderNo" />
+    <result column="end_time" jdbcType="TIMESTAMP" property="endTime" />
+    <result column="common_status" jdbcType="TINYINT" property="commonStatus" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="is_deleted" jdbcType="BIT" property="isDeleted" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, user_id, price, use_order_no, end_time, common_status, create_time, update_time, 
+    is_deleted
+  </sql>
+  <select id="selectByExample" parameterType="com.lixavier.manage.model.GiftCardExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from tb_gift_card
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tb_gift_card
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from tb_gift_card
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.lixavier.manage.model.GiftCardExample">
+    delete from tb_gift_card
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.lixavier.manage.model.GiftCard">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.String">
+      select LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_gift_card (user_id, price, use_order_no, 
+      end_time, common_status, create_time, 
+      update_time, is_deleted)
+    values (#{userId,jdbcType=BIGINT}, #{price,jdbcType=DECIMAL}, #{useOrderNo,jdbcType=VARCHAR}, 
+      #{endTime,jdbcType=TIMESTAMP}, #{commonStatus,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{isDeleted,jdbcType=BIT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.lixavier.manage.model.GiftCard">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.String">
+      select LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_gift_card
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="price != null">
+        price,
+      </if>
+      <if test="useOrderNo != null">
+        use_order_no,
+      </if>
+      <if test="endTime != null">
+        end_time,
+      </if>
+      <if test="commonStatus != null">
+        common_status,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="isDeleted != null">
+        is_deleted,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="price != null">
+        #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="useOrderNo != null">
+        #{useOrderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="endTime != null">
+        #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="commonStatus != null">
+        #{commonStatus,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDeleted != null">
+        #{isDeleted,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.lixavier.manage.model.GiftCardExample" resultType="java.lang.Long">
+    select count(*) from tb_gift_card
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update tb_gift_card
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userId != null">
+        user_id = #{record.userId,jdbcType=BIGINT},
+      </if>
+      <if test="record.price != null">
+        price = #{record.price,jdbcType=DECIMAL},
+      </if>
+      <if test="record.useOrderNo != null">
+        use_order_no = #{record.useOrderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.endTime != null">
+        end_time = #{record.endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.commonStatus != null">
+        common_status = #{record.commonStatus,jdbcType=TINYINT},
+      </if>
+      <if test="record.createTime != null">
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null">
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.isDeleted != null">
+        is_deleted = #{record.isDeleted,jdbcType=BIT},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update tb_gift_card
+    set id = #{record.id,jdbcType=VARCHAR},
+      user_id = #{record.userId,jdbcType=BIGINT},
+      price = #{record.price,jdbcType=DECIMAL},
+      use_order_no = #{record.useOrderNo,jdbcType=VARCHAR},
+      end_time = #{record.endTime,jdbcType=TIMESTAMP},
+      common_status = #{record.commonStatus,jdbcType=TINYINT},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      is_deleted = #{record.isDeleted,jdbcType=BIT}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.lixavier.manage.model.GiftCard">
+    update tb_gift_card
+    <set>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="price != null">
+        price = #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="useOrderNo != null">
+        use_order_no = #{useOrderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="endTime != null">
+        end_time = #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="commonStatus != null">
+        common_status = #{commonStatus,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDeleted != null">
+        is_deleted = #{isDeleted,jdbcType=BIT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.lixavier.manage.model.GiftCard">
+    update tb_gift_card
+    set user_id = #{userId,jdbcType=BIGINT},
+      price = #{price,jdbcType=DECIMAL},
+      use_order_no = #{useOrderNo,jdbcType=VARCHAR},
+      end_time = #{endTime,jdbcType=TIMESTAMP},
+      common_status = #{commonStatus,jdbcType=TINYINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      is_deleted = #{isDeleted,jdbcType=BIT}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+
+
+    <update id="logicalDeleteByPrimaryKey">
+        UPDATE tb_gift_card
+        SET
+            is_deleted=1
+        WHERE id = #{id,jdbcType=VARCHAR} 
+    </update>
+
+    <select id="selectByPrimaryKeyForUpdate" resultMap="BaseResultMap" parameterType="java.lang.String">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM tb_gift_card
+        WHERE id = #{id,jdbcType=VARCHAR} 
+        AND is_deleted=0
+        FOR UPDATE
+    </select>
+    
+    <select id="queryGiftCard" resultMap="BaseResultMap" parameterType="com.lixavier.manage.req.GiftCardQueryDTO">
+        SELECT
+         <choose>
+          <when test="returnFields!=null">${returnFields}</when>
+          <otherwise>
+            <include refid="Base_Column_List" />
+          </otherwise>
+        </choose>
+        FROM tb_gift_card
+        <where>
+            <if test="id!=null and id!=''">AND id = #{id,jdbcType=VARCHAR}</if>
+            <if test="idLike != null and idLike != '' ">AND id LIKE concat(#{idLike,jdbcType=VARCHAR},'%')</if>
+            <if test="idList != null and idList.size > 0">
+                <foreach item="item" separator="," open="AND id in (" close=")" collection="idList">#{item,jdbcType=VARCHAR}</foreach>
+            </if>
+            <if test="userId!=null">AND user_id = #{userId,jdbcType=BIGINT}</if>
+            <if test="userIdList != null and userIdList.size > 0">
+                <foreach item="item" separator="," open="AND user_id in (" close=")" collection="userIdList">#{item,jdbcType=BIGINT}</foreach>
+            </if>
+            <if test="priceFrom != null"><![CDATA[AND price >= #{priceFrom,jdbcType=DECIMAL}]]></if>
+            <if test="priceTo != null"><![CDATA[AND price <= #{priceTo,jdbcType=DECIMAL}]]></if>
+            <if test="useOrderNo!=null and useOrderNo!=''">AND use_order_no = #{useOrderNo,jdbcType=VARCHAR}</if>
+            <if test="useOrderNoLike != null and useOrderNoLike != '' ">AND use_order_no LIKE concat(#{useOrderNoLike,jdbcType=VARCHAR},'%')</if>
+            <if test="useOrderNoList != null and useOrderNoList.size > 0">
+                <foreach item="item" separator="," open="AND use_order_no in (" close=")" collection="useOrderNoList">#{item,jdbcType=VARCHAR}</foreach>
+            </if>
+            <if test="endTimeFrom != null"><![CDATA[AND end_time >= #{endTimeFrom,jdbcType=TIMESTAMP}]]></if>
+            <if test="endTimeTo != null"><![CDATA[AND end_time <= #{endTimeTo,jdbcType=TIMESTAMP}]]></if>
+            <if test="commonStatus!=null">AND common_status = #{commonStatus,jdbcType=TINYINT}</if>
+            <if test="commonStatusList != null and commonStatusList.size > 0">
+                <foreach item="item" separator="," open="AND common_status in (" close=")" collection="commonStatusList">#{item,jdbcType=TINYINT}</foreach>
+            </if>
+            <if test="createTimeFrom != null"><![CDATA[AND create_time >= #{createTimeFrom,jdbcType=TIMESTAMP}]]></if>
+            <if test="createTimeTo != null"><![CDATA[AND create_time <= #{createTimeTo,jdbcType=TIMESTAMP}]]></if>
+            <if test="updateTimeFrom != null"><![CDATA[AND update_time >= #{updateTimeFrom,jdbcType=TIMESTAMP}]]></if>
+            <if test="updateTimeTo != null"><![CDATA[AND update_time <= #{updateTimeTo,jdbcType=TIMESTAMP}]]></if>
+            <if test="isDeleted!=null">AND is_deleted = #{isDeleted,jdbcType=BOOLEAN}</if>
+            <if test="isDeletedList != null and isDeletedList.size > 0">
+                <foreach item="item" separator="," open="AND is_deleted in (" close=")" collection="isDeletedList">#{item,jdbcType=BOOLEAN}</foreach>
+            </if>
+        </where>
+        <choose>
+            <when test="orderBy!=null and orderBy!=''">order by ${orderBy}</when>
+            <otherwise>order by create_time</otherwise>
+        </choose>
+    </select>
+
+    <insert id="insertBatch" parameterType="java.util.List">
+        insert into tb_gift_card (
+            id,
+            user_id,
+            price,
+            use_order_no,
+            end_time,
+            common_status,
+            is_deleted        )
+        values
+        <foreach collection="modelList" item="bean" index="index" separator=",">
+        (
+            #{bean.id,jdbcType=VARCHAR} ,
+            #{bean.userId,jdbcType=BIGINT} ,
+            #{bean.price,jdbcType=DECIMAL} ,
+            #{bean.useOrderNo,jdbcType=VARCHAR} ,
+            #{bean.endTime,jdbcType=TIMESTAMP} ,
+            #{bean.commonStatus,jdbcType=TINYINT} ,0         )
+        </foreach>
+    </insert>
+
+    
+</mapper>

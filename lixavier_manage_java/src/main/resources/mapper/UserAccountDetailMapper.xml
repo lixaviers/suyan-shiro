@@ -1,0 +1,402 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lixavier.manage.dao.UserAccountDetailMapper">
+    <resultMap id="BaseResultMap" type="com.lixavier.manage.model.UserAccountDetail">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="product" jdbcType="VARCHAR" property="product" />
+    <result column="transaction_type" jdbcType="TINYINT" property="transactionType" />
+    <result column="amount" jdbcType="DECIMAL" property="amount" />
+    <result column="balance" jdbcType="DECIMAL" property="balance" />
+    <result column="channel" jdbcType="TINYINT" property="channel" />
+    <result column="type" jdbcType="TINYINT" property="type" />
+    <result column="memo" jdbcType="VARCHAR" property="memo" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, user_id, product, transaction_type, amount, balance, channel, type, memo, create_time, 
+    update_time
+  </sql>
+  <select id="selectByExample" parameterType="com.lixavier.manage.model.UserAccountDetailExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from tb_user_account_detail
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tb_user_account_detail
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from tb_user_account_detail
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.lixavier.manage.model.UserAccountDetailExample">
+    delete from tb_user_account_detail
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.lixavier.manage.model.UserAccountDetail">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      select LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_user_account_detail (user_id, product, transaction_type, 
+      amount, balance, channel, 
+      type, memo, create_time, 
+      update_time)
+    values (#{userId,jdbcType=BIGINT}, #{product,jdbcType=VARCHAR}, #{transactionType,jdbcType=TINYINT}, 
+      #{amount,jdbcType=DECIMAL}, #{balance,jdbcType=DECIMAL}, #{channel,jdbcType=TINYINT}, 
+      #{type,jdbcType=TINYINT}, #{memo,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.lixavier.manage.model.UserAccountDetail">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      select LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_user_account_detail
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="product != null">
+        product,
+      </if>
+      <if test="transactionType != null">
+        transaction_type,
+      </if>
+      <if test="amount != null">
+        amount,
+      </if>
+      <if test="balance != null">
+        balance,
+      </if>
+      <if test="channel != null">
+        channel,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+      <if test="memo != null">
+        memo,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="product != null">
+        #{product,jdbcType=VARCHAR},
+      </if>
+      <if test="transactionType != null">
+        #{transactionType,jdbcType=TINYINT},
+      </if>
+      <if test="amount != null">
+        #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="balance != null">
+        #{balance,jdbcType=DECIMAL},
+      </if>
+      <if test="channel != null">
+        #{channel,jdbcType=TINYINT},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=TINYINT},
+      </if>
+      <if test="memo != null">
+        #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.lixavier.manage.model.UserAccountDetailExample" resultType="java.lang.Long">
+    select count(*) from tb_user_account_detail
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update tb_user_account_detail
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.userId != null">
+        user_id = #{record.userId,jdbcType=BIGINT},
+      </if>
+      <if test="record.product != null">
+        product = #{record.product,jdbcType=VARCHAR},
+      </if>
+      <if test="record.transactionType != null">
+        transaction_type = #{record.transactionType,jdbcType=TINYINT},
+      </if>
+      <if test="record.amount != null">
+        amount = #{record.amount,jdbcType=DECIMAL},
+      </if>
+      <if test="record.balance != null">
+        balance = #{record.balance,jdbcType=DECIMAL},
+      </if>
+      <if test="record.channel != null">
+        channel = #{record.channel,jdbcType=TINYINT},
+      </if>
+      <if test="record.type != null">
+        type = #{record.type,jdbcType=TINYINT},
+      </if>
+      <if test="record.memo != null">
+        memo = #{record.memo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null">
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null">
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update tb_user_account_detail
+    set id = #{record.id,jdbcType=BIGINT},
+      user_id = #{record.userId,jdbcType=BIGINT},
+      product = #{record.product,jdbcType=VARCHAR},
+      transaction_type = #{record.transactionType,jdbcType=TINYINT},
+      amount = #{record.amount,jdbcType=DECIMAL},
+      balance = #{record.balance,jdbcType=DECIMAL},
+      channel = #{record.channel,jdbcType=TINYINT},
+      type = #{record.type,jdbcType=TINYINT},
+      memo = #{record.memo,jdbcType=VARCHAR},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.lixavier.manage.model.UserAccountDetail">
+    update tb_user_account_detail
+    <set>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="product != null">
+        product = #{product,jdbcType=VARCHAR},
+      </if>
+      <if test="transactionType != null">
+        transaction_type = #{transactionType,jdbcType=TINYINT},
+      </if>
+      <if test="amount != null">
+        amount = #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="balance != null">
+        balance = #{balance,jdbcType=DECIMAL},
+      </if>
+      <if test="channel != null">
+        channel = #{channel,jdbcType=TINYINT},
+      </if>
+      <if test="type != null">
+        type = #{type,jdbcType=TINYINT},
+      </if>
+      <if test="memo != null">
+        memo = #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.lixavier.manage.model.UserAccountDetail">
+    update tb_user_account_detail
+    set user_id = #{userId,jdbcType=BIGINT},
+      product = #{product,jdbcType=VARCHAR},
+      transaction_type = #{transactionType,jdbcType=TINYINT},
+      amount = #{amount,jdbcType=DECIMAL},
+      balance = #{balance,jdbcType=DECIMAL},
+      channel = #{channel,jdbcType=TINYINT},
+      type = #{type,jdbcType=TINYINT},
+      memo = #{memo,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+
+
+    <select id="selectByPrimaryKeyForUpdate" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM tb_user_account_detail
+        WHERE id = #{id,jdbcType=BIGINT} 
+        FOR UPDATE
+    </select>
+    
+    <select id="queryUserAccountDetail" resultMap="BaseResultMap" parameterType="com.lixavier.manage.req.UserAccountDetailQueryDTO">
+        SELECT
+         <choose>
+          <when test="returnFields!=null">${returnFields}</when>
+          <otherwise>
+            <include refid="Base_Column_List" />
+          </otherwise>
+        </choose>
+        FROM tb_user_account_detail
+        <where>
+            <if test="id!=null">AND id = #{id,jdbcType=BIGINT}</if>
+            <if test="idList != null and idList.size > 0">
+                <foreach item="item" separator="," open="AND id in (" close=")" collection="idList">#{item,jdbcType=BIGINT}</foreach>
+            </if>
+            <if test="userId!=null">AND user_id = #{userId,jdbcType=BIGINT}</if>
+            <if test="userIdList != null and userIdList.size > 0">
+                <foreach item="item" separator="," open="AND user_id in (" close=")" collection="userIdList">#{item,jdbcType=BIGINT}</foreach>
+            </if>
+            <if test="product!=null and product!=''">AND product = #{product,jdbcType=VARCHAR}</if>
+            <if test="productLike != null and productLike != '' ">AND product LIKE concat(#{productLike,jdbcType=VARCHAR},'%')</if>
+            <if test="productList != null and productList.size > 0">
+                <foreach item="item" separator="," open="AND product in (" close=")" collection="productList">#{item,jdbcType=VARCHAR}</foreach>
+            </if>
+            <if test="transactionType!=null">AND transaction_type = #{transactionType,jdbcType=TINYINT}</if>
+            <if test="transactionTypeList != null and transactionTypeList.size > 0">
+                <foreach item="item" separator="," open="AND transaction_type in (" close=")" collection="transactionTypeList">#{item,jdbcType=TINYINT}</foreach>
+            </if>
+            <if test="amountFrom != null"><![CDATA[AND amount >= #{amountFrom,jdbcType=DECIMAL}]]></if>
+            <if test="amountTo != null"><![CDATA[AND amount <= #{amountTo,jdbcType=DECIMAL}]]></if>
+            <if test="balanceFrom != null"><![CDATA[AND balance >= #{balanceFrom,jdbcType=DECIMAL}]]></if>
+            <if test="balanceTo != null"><![CDATA[AND balance <= #{balanceTo,jdbcType=DECIMAL}]]></if>
+            <if test="channel!=null">AND channel = #{channel,jdbcType=TINYINT}</if>
+            <if test="channelList != null and channelList.size > 0">
+                <foreach item="item" separator="," open="AND channel in (" close=")" collection="channelList">#{item,jdbcType=TINYINT}</foreach>
+            </if>
+            <if test="type!=null">AND type = #{type,jdbcType=TINYINT}</if>
+            <if test="typeList != null and typeList.size > 0">
+                <foreach item="item" separator="," open="AND type in (" close=")" collection="typeList">#{item,jdbcType=TINYINT}</foreach>
+            </if>
+            <if test="memo!=null and memo!=''">AND memo = #{memo,jdbcType=VARCHAR}</if>
+            <if test="memoLike != null and memoLike != '' ">AND memo LIKE concat(#{memoLike,jdbcType=VARCHAR},'%')</if>
+            <if test="memoList != null and memoList.size > 0">
+                <foreach item="item" separator="," open="AND memo in (" close=")" collection="memoList">#{item,jdbcType=VARCHAR}</foreach>
+            </if>
+            <if test="createTimeFrom != null"><![CDATA[AND create_time >= #{createTimeFrom,jdbcType=TIMESTAMP}]]></if>
+            <if test="createTimeTo != null"><![CDATA[AND create_time <= #{createTimeTo,jdbcType=TIMESTAMP}]]></if>
+            <if test="updateTimeFrom != null"><![CDATA[AND update_time >= #{updateTimeFrom,jdbcType=TIMESTAMP}]]></if>
+            <if test="updateTimeTo != null"><![CDATA[AND update_time <= #{updateTimeTo,jdbcType=TIMESTAMP}]]></if>
+        </where>
+        <choose>
+            <when test="orderBy!=null and orderBy!=''">order by ${orderBy}</when>
+            <otherwise>order by id</otherwise>
+        </choose>
+    </select>
+
+    <insert id="insertBatch" parameterType="java.util.List">
+        insert into tb_user_account_detail (
+            user_id,
+            product,
+            transaction_type,
+            amount,
+            balance,
+            channel,
+            type,
+            memo,
+            create_time,
+            update_time        )
+        values
+        <foreach collection="modelList" item="bean" index="index" separator=",">
+        (
+            #{bean.userId,jdbcType=BIGINT} ,
+            #{bean.product,jdbcType=VARCHAR} ,
+            #{bean.transactionType,jdbcType=TINYINT} ,
+            #{bean.amount,jdbcType=DECIMAL} ,
+            #{bean.balance,jdbcType=DECIMAL} ,
+            #{bean.channel,jdbcType=TINYINT} ,
+            #{bean.type,jdbcType=TINYINT} ,
+            #{bean.memo,jdbcType=VARCHAR} ,
+            #{bean.createTime,jdbcType=TIMESTAMP} ,
+            #{bean.updateTime,jdbcType=TIMESTAMP}         )
+        </foreach>
+    </insert>
+
+    
+</mapper>

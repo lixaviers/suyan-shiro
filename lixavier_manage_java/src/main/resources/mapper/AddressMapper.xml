@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lixavier.manage.dao.AddressMapper">
+    <resultMap id="BaseResultMap" type="com.lixavier.manage.model.Address">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <collection property="children" ofType="com.lixavier.manage.model.Address">
+            <id column="bid" jdbcType="INTEGER" property="id"/>
+            <result column="bname" jdbcType="VARCHAR" property="name"/>
+            <collection property="children" ofType="com.lixavier.manage.model.Address">
+                <id column="cid" jdbcType="INTEGER" property="id"/>
+                <result column="cname" jdbcType="VARCHAR" property="name"/>
+            </collection>
+        </collection>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+      id, parent_id, name, order_num, address_level
+    </sql>
+
+    <select id="getAddress" resultType="com.lixavier.manage.model.Address">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM
+          tb_address
+        WHERE id = #{id, jdbcType=INTEGER}
+    </select>
+
+    <select id="getAddressList" resultMap="BaseResultMap">
+        SELECT
+          a.id,
+          a.name,
+          b.id AS bid,
+          b.name AS bname,
+          c.id AS cid,
+          c.name AS cname
+        FROM
+          tb_address a
+          LEFT JOIN tb_address b
+            ON b.parent_id = a.id
+          LEFT JOIN tb_address c
+            ON c.parent_id = b.id
+        WHERE a.parent_id = 1
+        ORDER BY a.order_num,
+          a.id,
+          b.order_num,
+          b.id,
+          c.order_num,
+          c.id
+    </select>
+
+
+</mapper>
