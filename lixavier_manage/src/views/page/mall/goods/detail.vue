@@ -27,37 +27,40 @@
           <el-row v-html="goods.description"></el-row>
         </el-tab-pane>
         <el-tab-pane :label="'累计评价 ' + totalPage">
-          <table class="goods-common" width="100%">
-            <tr v-for="(item, index) in goodsCommonList" :key="item.id">
-              <td class="tm-col-master">
-                <div class="tm-rate-content">
-                  <div class="tm-rate-fulltxt">{{item.content}}</div>
-                  <div v-if="item.urls && item.urls.length > 0" class="tm-m-photos">
-                    <ul class="tm-m-photos-thumb">
-                      <li v-for="item in item.urls" :key="item">
-                        <img :src="item"/><b class="tm-photos-arrow"></b>
-                      </li>
-                    </ul>
+          <el-row v-if="totalPage > 0">
+            <table class="goods-common" width="100%">
+              <tr v-for="(item, index) in goodsCommonList" :key="item.id">
+                <td class="tm-col-master">
+                  <div class="tm-rate-content">
+                    <div class="tm-rate-fulltxt">{{item.content}}</div>
+                    <div v-if="item.urls && item.urls.length > 0" class="tm-m-photos">
+                      <ul class="tm-m-photos-thumb">
+                        <li v-for="item in item.urls" :key="item">
+                          <img :src="item"/><b class="tm-photos-arrow"></b>
+                        </li>
+                      </ul>
+                    </div>
                   </div>
-                </div>
-                <div class="tm-rate-date mt10">{{formatDate(item.createTime)}}</div>
-                <div v-if="item.isReply" class="tm-rate-reply">
-                  <div class="tm-rate-fulltxt">后台回复：{{item.replyContent}}</div>
-                </div>
-              </td>
-              <td class="col-author">
-                <div class="rate-user-info">{{item.nickName}}<span v-if="item.isAnonymous">（匿名）</span></div>
-              </td>
-            </tr>
-          </table>
-          <el-pagination
-            layout="prev, pager, next"
-            :total="totalPage"
-            style="margin-top: 20px;"
-            @current-change="currentChangeHandle"
-            :current-page="pageIndex"
-            :page-size="pageSize">
-          </el-pagination>
+                  <div class="tm-rate-date mt10">{{formatDate(item.createTime)}}</div>
+                  <div v-if="item.isReply" class="tm-rate-reply">
+                    <div class="tm-rate-fulltxt">后台回复：{{item.replyContent}}</div>
+                  </div>
+                </td>
+                <td class="col-author">
+                  <div class="rate-user-info">{{item.nickName}}<span v-if="item.isAnonymous">（匿名）</span></div>
+                </td>
+              </tr>
+            </table>
+            <el-pagination
+              layout="prev, pager, next"
+              :total="totalPage"
+              style="margin-top: 20px;"
+              @current-change="currentChangeHandle"
+              :current-page="pageIndex"
+              :page-size="pageSize">
+            </el-pagination>
+          </el-row>
+          <el-row v-else>暂无评论</el-row>
         </el-tab-pane>
       </el-tabs>
     </el-row>
@@ -213,6 +216,7 @@
           data: t.$http.adornData({
             'pageNo': t.pageIndex,
             'pageSize': t.pageSize,
+            'goodsId': t.goods.id,
             'orderBy': 'create_time desc,id desc',
           })
         }).then(({data}) => {
