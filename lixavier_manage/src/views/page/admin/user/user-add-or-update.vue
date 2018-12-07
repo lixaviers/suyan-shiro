@@ -60,7 +60,7 @@
         }
       }
       var validateEmail = (rule, value, callback) => {
-        if (value === '') {
+        if (!value) {
           callback()
         }
         if (!isEmail(value)) {
@@ -70,7 +70,7 @@
         }
       }
       var validateMobile = (rule, value, callback) => {
-        if (value === '') {
+        if (!value) {
           callback()
         }
         if (!isMobile(value)) {

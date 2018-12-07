@@ -32,6 +32,7 @@ mybatis:
 server:
   port: 40002
 
+# 是否开启redis
 lixavier:
   redis:
     open: true
@@ -44,7 +45,7 @@ lixavier:
       secretKey: --
       region: --
       bucketName: --
-
+# 分页插件配置
 pagehelper:
   helperDialect: mysql
   reasonable: true
