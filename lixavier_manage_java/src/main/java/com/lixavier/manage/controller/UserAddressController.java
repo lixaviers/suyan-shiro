@@ -37,7 +37,7 @@ public class UserAddressController extends BaseController {
         Result<Integer> result = Result.newSuccess();
         try {
             UserVO user = getUser();
-            result = userAddressService.deleteUserAddress(id);
+            result = userAddressService.deleteUserAddress(id, getUser().getId());
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             result.setErrorCode(ResultCode.SYS_ERROR);

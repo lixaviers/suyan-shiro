@@ -52,35 +52,6 @@ public class UserAccountDetailBiz {
     }
 
     /**
-     * 批量创建
-     *
-     * @param userAccountDetailList
-     * @return
-     * @author lixavier
-     * @version 1.0.0
-     */
-    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, rollbackFor = Exception.class)
-    public int batchCreateUserAccountDetail(List<UserAccountDetail> userAccountDetailList) {
-        // TODO: Describe business logic and implement it
-        return userAccountDetailMapper.insertBatch(userAccountDetailList);
-    }
-
-    /**
-     * 根据ID获取用户账户明细信息
-     *
-     * @param id
-     * @return
-     * @author lixavier
-     * @version 1.0.0
-     */
-    @Transactional(readOnly = true)
-    public UserAccountDetail getUserAccountDetail(Long id) {
-        // TODO: Describe business logic and implement it
-        UserAccountDetail userAccountDetail = userAccountDetailMapper.selectByPrimaryKey(id);
-        return userAccountDetail;
-    }
-
-    /**
      * 分页查询用户账户明细信息
      *
      * @param userAccountDetailQuery

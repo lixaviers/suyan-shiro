@@ -64,26 +64,6 @@ public class UserCartController extends BaseController {
         return result;
     }
 
-    @ApiOperation(value = "updateUserCart", notes = "更新用户购物车")
-    @RequestMapping(value = "updateUserCart", method = {RequestMethod.POST})
-    public Result<Integer> updateUserCart(@Valid @RequestBody UserCartDTO userCartDTO) {
-        Result<Integer> result = Result.newSuccess();
-        try {
-            ValidationResult validateEntity = ValidationUtils.validateEntity(userCartDTO);
-            if (validateEntity.isHasErrors()) {
-                result.setCode(ResultCode.COMMON_PARAM_INVALID.getCode());
-                result.setMessage(validateEntity.getErrorMsg().toString());
-                return result;
-            }
-            userCartDTO.setUserId(getUser().getId());
-            result = userCartService.updateUserCart(userCartDTO);
-        } catch (Exception e) {
-            logger.error(e.getMessage(), e);
-            result.setErrorCode(ResultCode.SYS_ERROR);
-        }
-        return result;
-    }
-
     @ApiOperation(value = "queryUserCart", notes = "分页获取用户购物车列表信息")
     @RequestMapping(value = "queryUserCart", method = {RequestMethod.POST})
     Result<QueryResultODTO<GoodsODTO>> queryUserCart(@Valid @RequestBody UserCartQueryDTO userCartQueryDTO) {

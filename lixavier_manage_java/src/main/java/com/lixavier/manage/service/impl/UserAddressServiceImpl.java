@@ -38,9 +38,9 @@ public class UserAddressServiceImpl implements IUserAddressService {
     private UserAddressBiz userAddressBiz;
 
     @Override
-    public Result<Integer> deleteUserAddress(Long id) {
+    public Result<Integer> deleteUserAddress(Long id, Long userId) {
         Result<Integer> result = Result.newSuccess();
-        result.setDataMap(userAddressBiz.deleteUserAddress(id));
+        result.setDataMap(userAddressBiz.deleteUserAddress(id, userId));
         return result;
     }
 

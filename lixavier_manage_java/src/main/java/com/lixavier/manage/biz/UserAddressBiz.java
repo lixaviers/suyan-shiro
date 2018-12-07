@@ -52,8 +52,8 @@ public class UserAddressBiz {
      * @version 1.0.0
      */
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, rollbackFor = Exception.class)
-    public Integer deleteUserAddress(Long id) {
-        // TODO: Describe business logic and implement it
+    public Integer deleteUserAddress(Long id, Long userId) {
+        getUserAddressUpdate(id, userId);
         int result = userAddressMapper.logicalDeleteByPrimaryKey(id);
         return result;
     }
@@ -111,6 +111,17 @@ public class UserAddressBiz {
         }
     }
 
+    private UserAddress getUserAddressUpdate(Long id, Long userId) {
+        UserAddress userAddressLast = userAddressMapper.selectByPrimaryKeyForUpdate(id);
+        if (userAddressLast == null || userAddressLast.getIsDeleted()) {
+            throw new CommonBizException(ResultCode.COMMON_PARAM_INVALID, "用户收货地址");
+        }
+        if (!userAddressLast.getUserId().equals(userId)) {
+            throw new CommonBizException(ResultCode.NO_PERMISSION);
+        }
+        return userAddressLast;
+    }
+
     /**
      * 更新用户收货地址
      *
@@ -121,17 +132,12 @@ public class UserAddressBiz {
      */
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, rollbackFor = Exception.class)
     public Integer updateUserAddress(UserAddress userAddress) {
-        Integer result = null;
-        UserAddress userAddressLast = userAddressMapper.selectByPrimaryKeyForUpdate(userAddress.getId());
-        if (userAddressLast == null) {
-            throw new CommonBizException(ResultCode.COMMON_PARAM_INVALID, "用户收货地址");
-        }
+        getUserAddressUpdate(userAddress.getId(), userAddress.getUserId());
         userAddress.setCreateTime(null);
         userAddress.setUpdateTime(null);
         userAddress.setIsDeleted(null);
         setIsDefault(userAddress);
-        result = userAddressMapper.updateByPrimaryKeySelective(userAddress);
-        return result;
+        return userAddressMapper.updateByPrimaryKeySelective(userAddress);
     }
 
     /**

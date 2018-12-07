@@ -73,20 +73,6 @@ public class UserLetterBiz {
         return userLetter.getId();
     }
 
-    /**
-     * 批量创建
-     *
-     * @param userLetterList
-     * @return
-     * @author lixavier
-     * @version 1.0.0
-     */
-    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, rollbackFor = Exception.class)
-    public int batchCreateUserLetter(List<UserLetter> userLetterList) {
-        // TODO: Describe business logic and implement it
-        return userLetterMapper.insertBatch(userLetterList);
-    }
-
 
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, rollbackFor = Exception.class)
     public boolean read(List<Long> idList) {
@@ -96,21 +82,6 @@ public class UserLetterBiz {
         example.createCriteria().andIdIn(idList);
         userLetterMapper.updateByExampleSelective(record, example);
         return true;
-    }
-
-    /**
-     * 根据ID获取用户站内信信息
-     *
-     * @param id
-     * @return
-     * @author lixavier
-     * @version 1.0.0
-     */
-    @Transactional(readOnly = true)
-    public UserLetter getUserLetter(Long id) {
-        // TODO: Describe business logic and implement it
-        UserLetter userLetter = userLetterMapper.selectByPrimaryKey(id);
-        return userLetter;
     }
 
     /**

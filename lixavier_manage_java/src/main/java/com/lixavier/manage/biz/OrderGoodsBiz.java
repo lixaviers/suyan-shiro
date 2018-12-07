@@ -95,20 +95,6 @@ public class OrderGoodsBiz {
     }
 
     /**
-     * 批量创建
-     *
-     * @param orderGoodsList
-     * @return
-     * @author lixavier
-     * @version 1.0.0
-     */
-    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, rollbackFor = Exception.class)
-    public int batchCreateOrderGoods(List<OrderGoods> orderGoodsList) {
-        // TODO: Describe business logic and implement it
-        return orderGoodsMapper.insertBatch(orderGoodsList);
-    }
-
-    /**
      * 更新订单商品
      *
      * @param orderGoods

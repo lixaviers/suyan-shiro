@@ -30,7 +30,7 @@ public interface IUserAddressService {
      * @param id
      * @return
      */
-    Result<Integer> deleteUserAddress(Long id);
+    Result<Integer> deleteUserAddress(Long id, Long userId);
     
     /**
      * 

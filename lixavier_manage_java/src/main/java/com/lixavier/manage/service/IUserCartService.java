@@ -42,26 +42,6 @@ public interface IUserCartService {
      */
     Result<Long> createUserCart(UserCartDTO userCartDTO);
 
-    /**
-     * 批量创建用户购物车
-     *
-     * @param userCartDTOs
-     * @return
-     * @author lixavier
-     * @version 1.0.0
-     */
-    Result<Integer> batchCreate(List<UserCartDTO> userCartDTOs);
-
-    /**
-     * 更新用户购物车
-     *
-     * @param userCartDTO
-     * @return
-     * @author lixavier
-     * @version 1.0.0
-     */
-    Result<Integer> updateUserCart(UserCartDTO userCartDTO);
-
 
     /**
      * 分页查询用户购物车信息

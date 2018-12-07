@@ -36,23 +36,6 @@ public class SysLogBiz {
     SysLogMapper sysLogMapper;
 
     /**
-     * 逻辑删除系统日志
-     *
-     * @param id
-     * @param updateUser
-     * @param updateUserName
-     * @return
-     * @author lixavier
-     * @version 1.0.0
-     */
-    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, rollbackFor = Exception.class)
-    public Integer deleteSysLog(Long id, String updateUser, String updateUserName) {
-        // TODO: Describe business logic and implement it
-        int result = sysLogMapper.logicalDeleteByPrimaryKey(id, updateUser, updateUserName);
-        return result;
-    }
-
-    /**
      * 创建系统日志
      *
      * @param sysLog
@@ -64,55 +47,6 @@ public class SysLogBiz {
     public Long createSysLog(SysLog sysLog) {
         sysLogMapper.insertSelective(sysLog);
         return sysLog.getId();
-    }
-
-    /**
-     * 批量创建
-     *
-     * @param sysLogList
-     * @return
-     * @author lixavier
-     * @version 1.0.0
-     */
-    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, rollbackFor = Exception.class)
-    public int batchCreateSysLog(List<SysLog> sysLogList) {
-        // TODO: Describe business logic and implement it
-        return sysLogMapper.insertBatch(sysLogList);
-    }
-
-    /**
-     * 更新系统日志
-     *
-     * @param sysLog
-     * @return
-     * @author lixavier
-     * @version 1.0.0
-     */
-    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, rollbackFor = Exception.class)
-    public Integer updateSysLog(SysLog sysLog) {
-        Integer result = null;
-        SysLog sysLogLast = sysLogMapper.selectByPrimaryKeyForUpdate(sysLog.getId());
-        if (sysLogLast == null) {
-            // TODO：这里请写清楚
-        }
-        // TODO: Describe business logic and implement it
-        result = sysLogMapper.updateByPrimaryKeySelective(sysLog);
-        return result;
-    }
-
-    /**
-     * 根据ID获取系统日志信息
-     *
-     * @param id
-     * @return
-     * @author lixavier
-     * @version 1.0.0
-     */
-    @Transactional(readOnly = true)
-    public SysLog getSysLog(Long id) {
-        // TODO: Describe business logic and implement it
-        SysLog sysLog = sysLogMapper.selectByPrimaryKey(id);
-        return sysLog;
     }
 
     /**

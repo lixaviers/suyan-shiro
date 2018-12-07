@@ -65,21 +65,6 @@ public class OrderBiz {
     private UserCartAsync userCartAsync;
 
     /**
-     * 逻辑删除订单
-     *
-     * @param id
-     * @return
-     * @author lixavier
-     * @version 1.0.0
-     */
-    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, rollbackFor = Exception.class)
-    public Integer deleteOrder(Long id) {
-        // TODO: Describe business logic and implement it
-        int result = orderMapper.logicalDeleteByPrimaryKey(id);
-        return result;
-    }
-
-    /**
      * 创建订单
      *
      * @param orderDTO

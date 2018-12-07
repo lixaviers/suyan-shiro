@@ -60,26 +60,6 @@ public class UserCartServiceImpl implements IUserCartService {
     }
 
     @Override
-    public Result<Integer> batchCreate(List<UserCartDTO> userCartDTOs) {
-        Result<Integer> result = Result.newSuccess();
-        List<UserCart> items = UserCartConvertor.toUserCartList(userCartDTOs);
-        result.setDataMap(userCartBiz.batchCreateUserCart(items));
-        return result;
-    }
-
-    @Override
-    public Result<Integer> updateUserCart(UserCartDTO userCartDTO) {
-        Result<Integer> result = Result.newSuccess();
-        UserCart userCart = null;
-        userCart = UserCartConvertor.toUserCart(userCartDTO);
-        if (!validateForUpdate(userCart, result)) {
-            return result;
-        }
-        result.setDataMap(userCartBiz.updateUserCart(userCart));
-        return result;
-    }
-
-    @Override
     public Result<QueryResultODTO<GoodsODTO>> queryUserCart(UserCartQueryDTO userCartQueryDTO) {
         Result<QueryResultODTO<GoodsODTO>> result = Result.newSuccess();
         QueryResultODTO<Goods> resultInfo = userCartBiz.queryUserCart(userCartQueryDTO);

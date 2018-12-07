@@ -87,55 +87,6 @@ public class UserCartBiz {
     }
 
     /**
-     * 批量创建
-     *
-     * @param userCartList
-     * @return
-     * @author lixavier
-     * @version 1.0.0
-     */
-    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, rollbackFor = Exception.class)
-    public int batchCreateUserCart(List<UserCart> userCartList) {
-        // TODO: Describe business logic and implement it
-        return userCartMapper.insertBatch(userCartList);
-    }
-
-    /**
-     * 更新用户购物车
-     *
-     * @param userCart
-     * @return
-     * @author lixavier
-     * @version 1.0.0
-     */
-    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, rollbackFor = Exception.class)
-    public Integer updateUserCart(UserCart userCart) {
-        Integer result = null;
-        UserCart userCartLast = userCartMapper.selectByPrimaryKeyForUpdate(userCart.getId());
-        if (userCartLast == null) {
-            // TODO：这里请写清楚
-        }
-        // TODO: Describe business logic and implement it
-        result = userCartMapper.updateByPrimaryKeySelective(userCart);
-        return result;
-    }
-
-    /**
-     * 根据ID获取用户购物车信息
-     *
-     * @param id
-     * @return
-     * @author lixavier
-     * @version 1.0.0
-     */
-    @Transactional(readOnly = true)
-    public UserCart getUserCart(Long id) {
-        // TODO: Describe business logic and implement it
-        UserCart userCart = userCartMapper.selectByPrimaryKey(id);
-        return userCart;
-    }
-
-    /**
      * 分页查询用户购物车信息
      *
      * @param userCartQuery

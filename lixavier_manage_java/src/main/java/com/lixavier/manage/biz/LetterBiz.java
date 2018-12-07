@@ -44,36 +44,6 @@ public class LetterBiz {
     UserLetterBiz userLetterBiz;
 
     /**
-     * 逻辑删除站内信
-     *
-     * @param id
-     * @return
-     * @author lixavier
-     * @version 1.0.0
-     */
-    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, rollbackFor = Exception.class)
-    public Integer deleteLetter(Long id) {
-        // TODO: Describe business logic and implement it
-        int result = letterMapper.logicalDeleteByPrimaryKey(id);
-        return result;
-    }
-
-    /**
-     * 创建站内信
-     *
-     * @param letter
-     * @return
-     * @author lixavier
-     * @version 1.0.0
-     */
-    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, rollbackFor = Exception.class)
-    public Long createLetter(Letter letter) {
-        // TODO: Describe business logic and implement it
-        letterMapper.insertSelective(letter);
-        return letter.getId();
-    }
-
-    /**
      * 创建礼品卡站内信
      *
      * @return
@@ -94,55 +64,6 @@ public class LetterBiz {
         userLetterBiz.createUserLetter(userLetter);
 
         return letter.getId();
-    }
-
-    /**
-     * 批量创建
-     *
-     * @param letterList
-     * @return
-     * @author lixavier
-     * @version 1.0.0
-     */
-    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, rollbackFor = Exception.class)
-    public int batchCreateLetter(List<Letter> letterList) {
-        // TODO: Describe business logic and implement it
-        return letterMapper.insertBatch(letterList);
-    }
-
-    /**
-     * 更新站内信
-     *
-     * @param letter
-     * @return
-     * @author lixavier
-     * @version 1.0.0
-     */
-    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, rollbackFor = Exception.class)
-    public Integer updateLetter(Letter letter) {
-        Integer result = null;
-        Letter letterLast = letterMapper.selectByPrimaryKeyForUpdate(letter.getId());
-        if (letterLast == null) {
-            // TODO：这里请写清楚
-        }
-        // TODO: Describe business logic and implement it
-        result = letterMapper.updateByPrimaryKeySelective(letter);
-        return result;
-    }
-
-    /**
-     * 根据ID获取站内信信息
-     *
-     * @param id
-     * @return
-     * @author lixavier
-     * @version 1.0.0
-     */
-    @Transactional(readOnly = true)
-    public Letter getLetter(Long id) {
-        // TODO: Describe business logic and implement it
-        Letter letter = letterMapper.selectByPrimaryKey(id);
-        return letter;
     }
 
     /**

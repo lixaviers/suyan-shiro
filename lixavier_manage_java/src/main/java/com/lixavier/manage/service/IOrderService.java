@@ -24,16 +24,6 @@ import java.util.List;
 public interface IOrderService {
 
     /**
-     * 删除订单
-     *
-     * @param id
-     * @return
-     * @author lixavier
-     * @version 1.0.0
-     */
-    Result<Integer> deleteOrder(Long id);
-
-    /**
      * 创建订单
      *
      * @param orderDTO

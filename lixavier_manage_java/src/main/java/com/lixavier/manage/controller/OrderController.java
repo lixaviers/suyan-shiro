@@ -30,20 +30,6 @@ public class OrderController extends BaseController {
     @Autowired
     private IOrderService orderService;
 
-    @ApiOperation(value = "deleteOrder/{id}", notes = "删除订单")
-    @RequestMapping(value = "deleteOrder/{id}", method = {RequestMethod.POST})
-    public Result<Integer> deleteOrder(@PathVariable Long id) {
-        Result<Integer> result = Result.newSuccess();
-        try {
-            UserVO user = getUser();
-            result = orderService.deleteOrder(id);
-        } catch (Exception e) {
-            logger.error(e.getMessage(), e);
-            result.setErrorCode(ResultCode.SYS_ERROR);
-        }
-        return result;
-    }
-
     @SysLog("创建订单")
     @ApiOperation(value = "createOrder", notes = "创建订单")
     @RequestMapping(value = "createOrder", method = {RequestMethod.POST})

@@ -40,21 +40,6 @@ public class OrderServiceImpl implements IOrderService {
     private OrderBiz orderBiz;
 
     /**
-     * 删除订单
-     *
-     * @param id
-     * @return
-     * @Author: <lixavier@163.com>
-     * @Version: <1.0>
-     */
-    @Override
-    public Result<Integer> deleteOrder(Long id) {
-        Result<Integer> result = Result.newSuccess();
-        result.setDataMap(orderBiz.deleteOrder(id));
-        return result;
-    }
-
-    /**
      * 创建订单
      *
      * @param orderDTO
