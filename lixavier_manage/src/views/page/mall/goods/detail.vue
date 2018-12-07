@@ -26,8 +26,38 @@
         <el-tab-pane label="商品详情">
           <el-row v-html="goods.description"></el-row>
         </el-tab-pane>
-        <el-tab-pane label="累计评价 0">
-          <el-row v-for="i in 30" :key="i" class="mt20">这里是评价，待开发</el-row>
+        <el-tab-pane :label="'累计评价 ' + totalPage">
+          <table class="goods-common" width="100%">
+            <tr v-for="(item, index) in goodsCommonList" :key="item.id">
+              <td class="tm-col-master">
+                <div class="tm-rate-content">
+                  <div class="tm-rate-fulltxt">{{item.content}}</div>
+                  <div v-if="item.urls && item.urls.length > 0" class="tm-m-photos">
+                    <ul class="tm-m-photos-thumb">
+                      <li v-for="item in item.urls" :key="item">
+                        <img :src="item"/><b class="tm-photos-arrow"></b>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="tm-rate-date mt10">{{formatDate(item.createTime)}}</div>
+                <div v-if="item.isReply" class="tm-rate-reply">
+                  <div class="tm-rate-fulltxt">后台回复：{{item.replyContent}}</div>
+                </div>
+              </td>
+              <td class="col-author">
+                <div class="rate-user-info">{{item.nickName}}<span v-if="item.isAnonymous">（匿名）</span></div>
+              </td>
+            </tr>
+          </table>
+          <el-pagination
+            layout="prev, pager, next"
+            :total="totalPage"
+            style="margin-top: 20px;"
+            @current-change="currentChangeHandle"
+            :current-page="pageIndex"
+            :page-size="pageSize">
+          </el-pagination>
         </el-tab-pane>
       </el-tabs>
     </el-row>
@@ -59,15 +89,78 @@
     }
   }
 
+  .goods-common {
+    font-size: 12px;
+    font-family: tahoma, arial, \5FAE\8F6F\96C5\9ED1, sans-serif;
+    .tm-col-master {
+      width: 600px;
+      padding-right: 30px;
+    }
+
+    .tm-rate-content, .tm-rate-reply {
+      word-wrap: break-word;
+      word-break: break-all;
+      line-height: 19px;
+      overflow: hidden;
+    }
+
+    .tm-rate-date {
+      clear: both;
+      color: #ccc;
+    }
+    td {
+      padding: 16px 7px;
+      border-bottom: 1px solid #e3e3e3;
+    }
+
+    .rate-user-info {
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+      width: 95px;
+    }
+
+    .tm-rate-reply {
+      color: #AF874D;
+      margin-top: 8px;
+    }
+
+    .tm-m-photos-thumb {
+      margin: 10px 0;
+      list-style-type: none;
+      height: 40px;
+      zoom: 1;
+      li {
+        float: left;
+        border: 2px solid #f2f2f2;
+        zoom: 1;
+        padding: 2px;
+        margin-right: 8px;
+        position: relative;
+        transition: border-color .2s ease-out;
+      }
+      img {
+        display: block;
+        width: 40px;
+        height: 40px;
+      }
+    }
+  }
+
 
 </style>
 
 <script>
   import Decimal from 'decimal';
+  import {dateFormat} from '@/utils';
   export default {
     data() {
       return {
         goods: {},
+        goodsCommonList: [],
+        pageIndex: 1,
+        pageSize: 20,
+        totalPage: 0,
       }
     },
     activated(){
@@ -107,8 +200,31 @@
               this.goods = data.dataMap;
               this.goods.number = 1;
             }
-          })
+          }).then(function () {
+            t.getCommonList();
+          });
         }
+      },
+      getCommonList() {
+        let t = this;
+        t.$http({
+          url: t.$http.adornUrl('goodsComment/queryGoodsComment'),
+          method: 'post',
+          data: t.$http.adornData({
+            'pageNo': t.pageIndex,
+            'pageSize': t.pageSize,
+            'orderBy': 'create_time desc,id desc',
+          })
+        }).then(({data}) => {
+          if (data && data.code === 200) {
+            t.goodsCommonList = data.dataMap.records;
+            t.totalPage = data.dataMap.totalRecords;
+          } else {
+            t.goodsCommonList = []
+            t.totalPage = 0
+          }
+          t.dataListLoading = false
+        })
       },
       orderConfirm() {
         this.goods.description = '';
@@ -139,6 +255,14 @@
             t.$router.push({path: '/mall/cart/index'});
           }
         })
+      },
+      formatDate(time) {
+        return dateFormat(time, 'YYYY-MM-DD');
+      },
+      // 当前页
+      currentChangeHandle (val) {
+        this.pageIndex = val;
+        this.getCommonList();
       },
       removeTabHandle(tabName, name) {
         this.mainTabs = this.mainTabs.filter(item => item.name !== tabName);
