@@ -4,12 +4,12 @@
 <br>
 实现功能：采用shiro进行权限控制管理，动态拦截url，登录存储Reids，实现重启服务不需要重新登录，超时时间30min
 <br>
+图片服务器使用的是腾讯的，如果你需要使用别的，可以实现Storage接口，在application.yml中修改配置，storage.active填写你用的服务商
+<br>
 <br>
 lixavier_manage 项目前端 端口40001
 <br>
 lixavier_manage_java  项目后端 端口40002
-<br>
-图片服务器使用的是腾讯的，如果你需要使用别的，可以实现Storage接口，在application.yml中修改配置，storage.active填写你用的服务商
 <br>
 <br>
 数据库在lixavier_manage_java/src/main/resources/static中
