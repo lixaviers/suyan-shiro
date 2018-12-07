@@ -7,6 +7,11 @@
 图片服务器使用的是腾讯的，如果你需要使用别的，可以实现Storage接口，在application.yml中修改配置，storage.active填写你用的服务商
 <br>
 <br>
+一期(已实现)：实现权限控制、动态拦截url、商品/订单管理
+<br>
+二期(计划)：实现促销管理(优惠券、订单促销、下单促销优惠选择)，敬请期待
+<br>
+<br>
 lixavier_manage 项目前端 端口40001
 <br>
 lixavier_manage_java  项目后端 端口40002
