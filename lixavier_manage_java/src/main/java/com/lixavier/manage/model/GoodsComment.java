@@ -8,6 +8,7 @@ public class GoodsComment {
     public static final String ID = "ID";
     public static final String USER_ID = "用户id";
     public static final String GOODS_ID = "商品id";
+    public static final String ORDER_GOODS_ID = "订单商品id";
     public static final String IS_ANONYMOUS = "是否匿名";
     public static final String NICK_NAME = "昵称";
     public static final String CONTENT = "评论内容";
@@ -32,6 +33,11 @@ public class GoodsComment {
      * 商品id
      */
     private Long goodsId;
+
+    /**
+     * 订单商品id
+     */
+    private Long orderGoodsId;
 
     /**
      * 是否匿名
@@ -96,6 +102,14 @@ public class GoodsComment {
     
     public void setGoodsId(Long goodsId){
         this.goodsId = goodsId;
+    }
+
+    public Long getOrderGoodsId(){
+        return orderGoodsId;
+    }
+    
+    public void setOrderGoodsId(Long orderGoodsId){
+        this.orderGoodsId = orderGoodsId;
     }
 
     public Boolean getIsAnonymous(){

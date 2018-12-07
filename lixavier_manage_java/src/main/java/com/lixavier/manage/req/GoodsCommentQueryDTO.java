@@ -58,6 +58,22 @@ public class GoodsCommentQueryDTO extends QueryDTO {
     public void setGoodsIdList(List<Long> goodsIdList){
         this.goodsIdList = goodsIdList;
     }
+    private Long orderGoodsId;
+            
+    public Long getOrderGoodsId(){
+        return orderGoodsId;
+    }
+    public void setOrderGoodsId(Long orderGoodsId){
+        this.orderGoodsId = orderGoodsId;
+    }
+    private List<Long> orderGoodsIdList;
+
+    public List<Long> getOrderGoodsIdList(){
+        return orderGoodsIdList;
+    }
+    public void setOrderGoodsIdList(List<Long> orderGoodsIdList){
+        this.orderGoodsIdList = orderGoodsIdList;
+    }
     private Boolean isAnonymous;
             
     public Boolean getIsAnonymous(){

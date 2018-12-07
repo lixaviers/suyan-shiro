@@ -22,7 +22,6 @@
           <el-upload
             :action="uploadPath"
             :show-file-list="false"
-            :headers="headers"
             :on-success="uploadPicUrl"
             class="avatar-uploader"
             list-type="picture-card"
@@ -152,13 +151,6 @@
               }
             });
           }
-        }
-      }
-    },
-    computed: {
-      headers() {
-        return {
-          'X-Litemall-Admin-Token': 'imbl8txiwyt5ygfvpqmf8pacag1joeok'
         }
       }
     },

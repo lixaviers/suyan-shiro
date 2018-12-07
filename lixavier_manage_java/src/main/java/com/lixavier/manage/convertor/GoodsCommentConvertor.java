@@ -1,9 +1,11 @@
 package com.lixavier.manage.convertor;
 
+import com.alibaba.fastjson.JSON;
 import com.lixavier.manage.model.GoodsComment;
 import com.lixavier.manage.req.GoodsCommentDTO;
 import com.lixavier.manage.resp.GoodsCommentODTO;
 import com.lixavier.manage.resp.QueryResultODTO;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.cglib.beans.BeanCopier;
 
 import java.util.ArrayList;
@@ -31,6 +33,9 @@ public abstract class GoodsCommentConvertor {
         }
         GoodsCommentODTO goodsCommentODTO = new GoodsCommentODTO();
         beanCopierForGoodsCommentODTO.copy(goodsComment, goodsCommentODTO, null);
+        if (StringUtils.isNotEmpty(goodsComment.getPicUrls())) {
+            goodsCommentODTO.setUrls(JSON.parseArray(goodsComment.getPicUrls(), String.class));
+        }
         return goodsCommentODTO;
     }
 

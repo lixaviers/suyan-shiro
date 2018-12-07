@@ -12,12 +12,12 @@ import com.lixavier.manage.service.IGoodsCommentService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.annotation.Version;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 import static com.lixavier.manage.validate.GoodsCommentValidate.validateForCreate;
+import static com.lixavier.manage.validate.GoodsCommentValidate.validateForReply;
 
 /**
  * @CopyRright (c)2008-2017: <素焉信息技术有限公司>
@@ -52,7 +52,7 @@ public class GoodsCommentServiceImpl implements IGoodsCommentService {
     public Result<Integer> replyGoodsComment(GoodsCommentDTO goodsCommentDTO) {
         Result<Integer> result = Result.newSuccess();
         GoodsComment goodsComment = GoodsCommentConvertor.toGoodsComment(goodsCommentDTO);
-        if (!validateForCreate(goodsComment, result)) {
+        if (!validateForReply(goodsComment, result)) {
             return result;
         }
         result.setDataMap(goodsCommentBiz.replyGoodsComment(goodsComment));

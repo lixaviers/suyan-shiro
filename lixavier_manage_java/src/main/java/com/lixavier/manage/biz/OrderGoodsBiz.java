@@ -63,10 +63,7 @@ public class OrderGoodsBiz {
      */
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, rollbackFor = Exception.class)
     public Integer deleteOrderGoods(Long id, Long userId) {
-        OrderGoods orderGoods = getOrderGoodsForUpdate(id);
-        if (!userId.equals(orderGoods.getUserId())) {
-            throw new CommonBizException(ResultCode.NO_PERMISSION);
-        }
+        OrderGoods orderGoods = getOrderGoodsForUpdate(id, userId);
         if (!OrderStatusEnum.CLOSED.equal(orderGoods.getCommonStatus())
                 && !OrderStatusEnum.COMPLETED.equal(orderGoods.getCommonStatus())
                 && !OrderStatusEnum.REFUNDED.equal(orderGoods.getCommonStatus())) {
@@ -104,7 +101,7 @@ public class OrderGoodsBiz {
      */
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, rollbackFor = Exception.class)
     public Integer updateOrderGoods(OrderGoods orderGoods) {
-        OrderGoods orderGoodsLast = getOrderGoodsForUpdate(orderGoods.getId());
+        OrderGoods orderGoodsLast = getOrderGoodsForUpdate(orderGoods.getId(), orderGoods.getUserId());
         orderGoodsLast.setIsDeleted(null);
         orderGoodsLast.setCreateTime(null);
         orderGoodsLast.setUpdateTime(null);
@@ -129,10 +126,13 @@ public class OrderGoodsBiz {
     }
 
     @Transactional(readOnly = true)
-    public OrderGoods getOrderGoodsForUpdate(Long id) {
+    public OrderGoods getOrderGoodsForUpdate(Long id, Long userId) {
         OrderGoods orderGoodsLast = orderGoodsMapper.selectByPrimaryKeyForUpdate(id);
         if (orderGoodsLast == null || orderGoodsLast.getIsDeleted()) {
             throw new CommonBizException(ResultCode.DATA_NOT_EXIST, "订单商品");
+        }
+        if (!userId.equals(orderGoodsLast.getUserId())) {
+            throw new CommonBizException(ResultCode.NO_PERMISSION);
         }
         return orderGoodsLast;
     }
@@ -198,10 +198,7 @@ public class OrderGoodsBiz {
      */
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, rollbackFor = Exception.class)
     public boolean confirmReceipt(Long id, Long userId) {
-        OrderGoods orderGoods = getOrderGoodsForUpdate(id);
-        if (!userId.equals(orderGoods.getUserId())) {
-            throw new CommonBizException(ResultCode.NO_PERMISSION);
-        }
+        OrderGoods orderGoods = getOrderGoodsForUpdate(id, userId);
         if (!OrderStatusEnum.PAID.equal(orderGoods.getCommonStatus())) {
             throw new CommonBizException(ResultCode.INVALID_CHANGE_STATUS, "订单商品");
         }
@@ -223,10 +220,7 @@ public class OrderGoodsBiz {
      */
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, rollbackFor = Exception.class)
     public boolean applyRefund(Long id, Long userId) {
-        OrderGoods orderGoods = getOrderGoodsForUpdate(id);
-        if (!userId.equals(orderGoods.getUserId())) {
-            throw new CommonBizException(ResultCode.NO_PERMISSION);
-        }
+        OrderGoods orderGoods = getOrderGoodsForUpdate(id, userId);
         if (!OrderStatusEnum.PAID.equal(orderGoods.getCommonStatus())) {
             throw new CommonBizException(ResultCode.INVALID_CHANGE_STATUS, "订单商品");
         }
@@ -246,7 +240,10 @@ public class OrderGoodsBiz {
      */
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, rollbackFor = Exception.class)
     public boolean refund(Long id, int opt, String message) {
-        OrderGoods orderGoods = getOrderGoodsForUpdate(id);
+        OrderGoods orderGoods = orderGoodsMapper.selectByPrimaryKeyForUpdate(id);
+        if (orderGoods == null || orderGoods.getIsDeleted()) {
+            throw new CommonBizException(ResultCode.DATA_NOT_EXIST, "订单商品");
+        }
         if (!OrderStatusEnum.REFUND.equal(orderGoods.getCommonStatus())) {
             throw new CommonBizException(ResultCode.INVALID_CHANGE_STATUS, "订单商品");
         }

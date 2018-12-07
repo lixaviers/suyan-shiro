@@ -22,6 +22,10 @@ public class GoodsCommentValidate {
 
     public static boolean validateForCreate(GoodsComment goodsComment, Result<?> message) {
 
+        if (isNull(message, GoodsComment.ORDER_GOODS_ID, goodsComment.getOrderGoodsId())) {
+            return false;
+        }
+
         if (isMoreThan(message, GoodsComment.CONTENT, goodsComment.getContent(), 500)) {
             return false;
         }
@@ -33,28 +37,8 @@ public class GoodsCommentValidate {
         return true;
     }
 
-    public static boolean validateForUpdate(GoodsComment goodsComment, Result<?> message) {
+    public static boolean validateForReply(GoodsComment goodsComment, Result<?> message) {
         if (isNull(message, GoodsComment.ID, goodsComment.getId())) {
-            return false;
-        }
-
-        if (isNull(message, GoodsComment.USER_ID, goodsComment.getUserId())) {
-            return false;
-        }
-
-        if (isNull(message, GoodsComment.GOODS_ID, goodsComment.getGoodsId())) {
-            return false;
-        }
-
-        if (isMoreThan(message, GoodsComment.NICK_NAME, goodsComment.getNickName(), 64)) {
-            return false;
-        }
-
-        if (isMoreThan(message, GoodsComment.CONTENT, goodsComment.getContent(), 500)) {
-            return false;
-        }
-
-        if (isMoreThan(message, GoodsComment.PIC_URLS, goodsComment.getPicUrls(), 1000)) {
             return false;
         }
 

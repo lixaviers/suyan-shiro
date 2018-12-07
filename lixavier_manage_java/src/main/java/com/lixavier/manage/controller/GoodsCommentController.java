@@ -1,5 +1,6 @@
 package com.lixavier.manage.controller;
 
+import com.lixavier.manage.annotation.SysLog;
 import com.lixavier.manage.resp.QueryResultODTO;
 import com.lixavier.manage.result.ValidationResult;
 import com.lixavier.manage.util.ValidationUtils;
@@ -27,6 +28,7 @@ public class GoodsCommentController extends BaseController {
     @Autowired
     private IGoodsCommentService goodsCommentService;
 
+    @SysLog("创建商品评论")
     @ApiOperation(value = "createGoodsComment", notes = "创建商品评论")
     @RequestMapping(value = "createGoodsComment", method = {RequestMethod.POST})
     public Result<Long> createGoodsComment(@Valid @RequestBody GoodsCommentDTO goodsCommentDTO) {
@@ -47,6 +49,7 @@ public class GoodsCommentController extends BaseController {
         return result;
     }
 
+    @SysLog("回复商品评论")
     @ApiOperation(value = "replyGoodsComment", notes = "回复商品评论")
     @RequestMapping(value = "replyGoodsComment", method = {RequestMethod.POST})
     public Result<Integer> replyGoodsComment(@Valid @RequestBody GoodsCommentDTO goodsCommentDTO) {

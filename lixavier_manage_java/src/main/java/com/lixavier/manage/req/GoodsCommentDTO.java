@@ -27,6 +27,11 @@ public class GoodsCommentDTO implements Serializable {
     private Long goodsId;
             
     /**
+     * 订单商品id
+     */
+    private Long orderGoodsId;
+            
+    /**
      * 是否匿名
      */
     private Boolean isAnonymous;
@@ -81,6 +86,14 @@ public class GoodsCommentDTO implements Serializable {
         this.goodsId = goodsId;
     }
     
+    public Long getOrderGoodsId(){
+        return orderGoodsId;
+    }
+    
+    public void setOrderGoodsId(Long orderGoodsId){
+        this.orderGoodsId = orderGoodsId;
+    }
+    
     public Boolean getIsAnonymous(){
         return isAnonymous;
     }
@@ -128,7 +141,7 @@ public class GoodsCommentDTO implements Serializable {
     public void setReplyContent(String replyContent){
         this.replyContent = replyContent;
     }
-    
+
     /**
     * The following custom property definition
     */

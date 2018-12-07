@@ -8,11 +8,13 @@ import com.lixavier.manage.exception.CommonBizException;
 import com.lixavier.manage.model.GoodsComment;
 import com.lixavier.manage.model.OrderGoods;
 import com.lixavier.manage.model.OrderGoodsExample;
+import com.lixavier.manage.model.User;
 import com.lixavier.manage.req.GoodsCommentQueryDTO;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.lixavier.manage.resp.QueryResultODTO;
 import com.lixavier.manage.result.ResultCode;
+import com.lixavier.manage.util.StringUtil;
 import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,6 +47,11 @@ public class GoodsCommentBiz {
     @Autowired
     OrderGoodsMapper orderGoodsMapper;
 
+    @Autowired
+    OrderGoodsBiz orderGoodsBiz;
+    @Autowired
+    UserBiz userBiz;
+
     /**
      * 创建商品评论
      *
@@ -55,33 +62,35 @@ public class GoodsCommentBiz {
      */
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, rollbackFor = Exception.class)
     public Long createGoodsComment(GoodsComment goodsComment) {
-        // 查询是否有交易成功的商品(删除的也算)
-        OrderGoodsExample example = new OrderGoodsExample();
-        example.createCriteria().andGoodsIdEqualTo(goodsComment.getGoodsId())
-                .andUserIdEqualTo(goodsComment.getUserId())
-                .andCommonStatusEqualTo(OrderStatusEnum.TRADE_SUCCESSFULLY.getValue());
-        List<OrderGoods> orderGoods = orderGoodsMapper.selectByExample(example);
-        if (CollectionUtils.isEmpty(orderGoods)) {
-            throw new CommonBizException(ResultCode.NO_PERMISSION);
-        }
+        OrderGoods orderGoods = orderGoodsBiz.getOrderGoodsForUpdate(goodsComment.getOrderGoodsId(), goodsComment.getUserId());
+
+        User userInfo = userBiz.getUserInfo(goodsComment.getUserId());
+
+        // 订单商品改成已完成状态
+        OrderGoods temp = new OrderGoods();
+        temp.setId(orderGoods.getId());
+        temp.setCommonStatus(OrderStatusEnum.COMPLETED.getValue());
+        orderGoodsMapper.updateByPrimaryKeySelective(temp);
+
         if (CollectionUtils.isNotEmpty(goodsComment.getUrls())) {
             goodsComment.setPicUrls(JSON.toJSONString(goodsComment.getUrls()));
         } else {
             goodsComment.setPicUrls(null);
         }
+        String userName = userInfo.getUserName();
+        if (goodsComment.getIsAnonymous()) {
+            // 匿名
+            goodsComment.setNickName(StringUtil.formatUserName(userName));
+        } else {
+            goodsComment.setNickName(userName);
+        }
+        goodsComment.setGoodsId(orderGoods.getGoodsId());
         goodsComment.setIsReply(null);
         goodsComment.setReplyContent(null);
         goodsComment.setCreateTime(null);
         goodsComment.setUpdateTime(null);
         goodsCommentMapper.insertSelective(goodsComment);
 
-        // 订单商品改成已完成状态
-        for (OrderGoods orderGood : orderGoods) {
-            OrderGoods temp = new OrderGoods();
-            temp.setId(orderGood.getId());
-            temp.setCommonStatus(OrderStatusEnum.COMPLETED.getValue());
-            orderGoodsMapper.updateByPrimaryKeySelective(temp);
-        }
 
         return goodsComment.getId();
     }

@@ -2,6 +2,7 @@ package com.lixavier.manage.resp;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 import com.wordnik.swagger.annotations.ApiModel;
 import com.wordnik.swagger.annotations.ApiModelProperty;
@@ -32,6 +33,12 @@ public class GoodsCommentODTO implements Serializable {
      */
     @ApiModelProperty("商品id")
     private Long goodsId;
+
+    /**
+     * 订单商品id
+     */
+    @ApiModelProperty("订单商品id")
+    private Long orderGoodsId;
 
     /**
      * 是否匿名
@@ -75,12 +82,6 @@ public class GoodsCommentODTO implements Serializable {
     @ApiModelProperty("创建时间")
     private Date createTime;
 
-    /**
-     * 更新时间
-     */
-    @ApiModelProperty("更新时间")
-    private Date updateTime;
-
 
     public Long getId() {
         return id;
@@ -104,6 +105,14 @@ public class GoodsCommentODTO implements Serializable {
 
     public void setGoodsId(Long goodsId) {
         this.goodsId = goodsId;
+    }
+
+    public Long getOrderGoodsId() {
+        return orderGoodsId;
+    }
+
+    public void setOrderGoodsId(Long orderGoodsId) {
+        this.orderGoodsId = orderGoodsId;
     }
 
     public Boolean getIsAnonymous() {
@@ -162,15 +171,22 @@ public class GoodsCommentODTO implements Serializable {
         this.createTime = createTime;
     }
 
-    public Date getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
-    }
 
     /**
      * The following custom property definition
      */
+
+    /**
+     * 图片地址列表
+     */
+    @ApiModelProperty("图片地址列表")
+    private List<String> urls;
+
+    public List<String> getUrls() {
+        return urls;
+    }
+
+    public void setUrls(List<String> urls) {
+        this.urls = urls;
+    }
 }

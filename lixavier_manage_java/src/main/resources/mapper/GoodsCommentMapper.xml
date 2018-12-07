@@ -5,6 +5,7 @@
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="user_id" jdbcType="BIGINT" property="userId" />
     <result column="goods_id" jdbcType="BIGINT" property="goodsId" />
+    <result column="order_goods_id" jdbcType="BIGINT" property="orderGoodsId" />
     <result column="is_anonymous" jdbcType="BIT" property="isAnonymous" />
     <result column="nick_name" jdbcType="VARCHAR" property="nickName" />
     <result column="content" jdbcType="VARCHAR" property="content" />
@@ -73,8 +74,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, user_id, goods_id, is_anonymous, nick_name, content, pic_urls, is_reply, reply_content, 
-    create_time, update_time
+    id, user_id, goods_id, order_goods_id, is_anonymous, nick_name, content, pic_urls, 
+    is_reply, reply_content, create_time, update_time
   </sql>
   <select id="selectByExample" parameterType="com.lixavier.manage.model.GoodsCommentExample" resultMap="BaseResultMap">
     select
@@ -111,14 +112,14 @@
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
       select LAST_INSERT_ID()
     </selectKey>
-    insert into tb_goods_comment (user_id, goods_id, is_anonymous, 
-      nick_name, content, pic_urls, 
-      is_reply, reply_content, create_time, 
-      update_time)
-    values (#{userId,jdbcType=BIGINT}, #{goodsId,jdbcType=BIGINT}, #{isAnonymous,jdbcType=BIT}, 
-      #{nickName,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, #{picUrls,jdbcType=VARCHAR}, 
-      #{isReply,jdbcType=BIT}, #{replyContent,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{updateTime,jdbcType=TIMESTAMP})
+    insert into tb_goods_comment (user_id, goods_id, order_goods_id, 
+      is_anonymous, nick_name, content, 
+      pic_urls, is_reply, reply_content, 
+      create_time, update_time)
+    values (#{userId,jdbcType=BIGINT}, #{goodsId,jdbcType=BIGINT}, #{orderGoodsId,jdbcType=BIGINT}, 
+      #{isAnonymous,jdbcType=BIT}, #{nickName,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, 
+      #{picUrls,jdbcType=VARCHAR}, #{isReply,jdbcType=BIT}, #{replyContent,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.lixavier.manage.model.GoodsComment">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
@@ -131,6 +132,9 @@
       </if>
       <if test="goodsId != null">
         goods_id,
+      </if>
+      <if test="orderGoodsId != null">
+        order_goods_id,
       </if>
       <if test="isAnonymous != null">
         is_anonymous,
@@ -163,6 +167,9 @@
       </if>
       <if test="goodsId != null">
         #{goodsId,jdbcType=BIGINT},
+      </if>
+      <if test="orderGoodsId != null">
+        #{orderGoodsId,jdbcType=BIGINT},
       </if>
       <if test="isAnonymous != null">
         #{isAnonymous,jdbcType=BIT},
@@ -208,6 +215,9 @@
       <if test="record.goodsId != null">
         goods_id = #{record.goodsId,jdbcType=BIGINT},
       </if>
+      <if test="record.orderGoodsId != null">
+        order_goods_id = #{record.orderGoodsId,jdbcType=BIGINT},
+      </if>
       <if test="record.isAnonymous != null">
         is_anonymous = #{record.isAnonymous,jdbcType=BIT},
       </if>
@@ -242,6 +252,7 @@
     set id = #{record.id,jdbcType=BIGINT},
       user_id = #{record.userId,jdbcType=BIGINT},
       goods_id = #{record.goodsId,jdbcType=BIGINT},
+      order_goods_id = #{record.orderGoodsId,jdbcType=BIGINT},
       is_anonymous = #{record.isAnonymous,jdbcType=BIT},
       nick_name = #{record.nickName,jdbcType=VARCHAR},
       content = #{record.content,jdbcType=VARCHAR},
@@ -262,6 +273,9 @@
       </if>
       <if test="goodsId != null">
         goods_id = #{goodsId,jdbcType=BIGINT},
+      </if>
+      <if test="orderGoodsId != null">
+        order_goods_id = #{orderGoodsId,jdbcType=BIGINT},
       </if>
       <if test="isAnonymous != null">
         is_anonymous = #{isAnonymous,jdbcType=BIT},
@@ -294,6 +308,7 @@
     update tb_goods_comment
     set user_id = #{userId,jdbcType=BIGINT},
       goods_id = #{goodsId,jdbcType=BIGINT},
+      order_goods_id = #{orderGoodsId,jdbcType=BIGINT},
       is_anonymous = #{isAnonymous,jdbcType=BIT},
       nick_name = #{nickName,jdbcType=VARCHAR},
       content = #{content,jdbcType=VARCHAR},
@@ -337,6 +352,10 @@
             <if test="goodsIdList != null and goodsIdList.size > 0">
                 <foreach item="item" separator="," open="AND goods_id in (" close=")" collection="goodsIdList">#{item,jdbcType=BIGINT}</foreach>
             </if>
+            <if test="orderGoodsId!=null">AND order_goods_id = #{orderGoodsId,jdbcType=BIGINT}</if>
+            <if test="orderGoodsIdList != null and orderGoodsIdList.size > 0">
+                <foreach item="item" separator="," open="AND order_goods_id in (" close=")" collection="orderGoodsIdList">#{item,jdbcType=BIGINT}</foreach>
+            </if>
             <if test="isAnonymous!=null">AND is_anonymous = #{isAnonymous,jdbcType=BOOLEAN}</if>
             <if test="isAnonymousList != null and isAnonymousList.size > 0">
                 <foreach item="item" separator="," open="AND is_anonymous in (" close=")" collection="isAnonymousList">#{item,jdbcType=BOOLEAN}</foreach>
@@ -365,6 +384,7 @@
         insert into tb_goods_comment (
             user_id,
             goods_id,
+            order_goods_id,
             is_anonymous,
             nick_name,
             content,
@@ -378,6 +398,7 @@
         (
             #{bean.userId,jdbcType=BIGINT} ,
             #{bean.goodsId,jdbcType=BIGINT} ,
+            #{bean.orderGoodsId,jdbcType=BIGINT} ,
             #{bean.isAnonymous,jdbcType=BOOLEAN} ,
             #{bean.nickName,jdbcType=VARCHAR} ,
             #{bean.content,jdbcType=VARCHAR} ,

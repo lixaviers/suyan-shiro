@@ -69,13 +69,14 @@
           <el-button v-if="scope.row.commonStatus == 1" type="text" size="small" @click="confirmHandle(scope.row.id)">
             确认收货
           </el-button>
-          <el-button v-if="scope.row.commonStatus == 1" type="text" size="small" @click="applyRefundHandle(scope.row.id)">
+          <el-button v-if="scope.row.commonStatus == 1" type="text" size="small"
+                     @click="applyRefundHandle(scope.row.id)">
             申请退款
           </el-button>
           <el-button v-if="scope.row.commonStatus == 2 || scope.row.commonStatus == 4 || scope.row.commonStatus == 6"
                      type="text" size="small" @click="deleteOrderGoodsHandle(scope.row.id)">删除
           </el-button>
-          <el-button v-if="scope.row.commonStatus == 3" type="text" size="small" @click="confirmHandle(scope.row.id)">
+          <el-button v-if="scope.row.commonStatus == 3" type="text" size="small" @click="commonHandle(scope.row.id)">
             评价
           </el-button>
         </template>
@@ -92,14 +93,20 @@
       :total="totalPage"
       layout="total, sizes, prev, pager, next, jumper">
     </el-pagination>
+    <common-goods v-if="commonVisible" ref="commonGoods" @refreshDataList="getDataList"></common-goods>
   </div>
 </template>
 
 <script>
+  import CommonGoods from './common';
   import {dateFormat} from '@/utils';
   export default {
+    components: {
+      CommonGoods
+    },
     data () {
       return {
+        commonVisible: false,
         transactionTypeList: [],
         channelList: [],
         dataForm: {
@@ -117,6 +124,12 @@
       this.getDataList()
     },
     methods: {
+      commonHandle(id){
+        this.commonVisible = true;
+        this.$nextTick(() => {
+          this.$refs.commonGoods.init(id);
+        })
+      },
       detailHandle(id){
         this.$router.push({path: '/finance/order/detail', query: {id: id}});
       },
