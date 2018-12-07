@@ -4,6 +4,7 @@
 <br>
 实现功能：采用shiro进行权限控制管理，动态拦截url，登录存储Reids，实现重启服务不需要重新登录，超时时间30min
 <br>
+<br>
 lixavier_manage 项目前端 端口40001
 <br>
 lixavier_manage_java  项目后端 端口40002
